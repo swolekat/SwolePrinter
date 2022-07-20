@@ -5,21 +5,46 @@ const pdf = require('html-pdf');
 
 const pathToIniFile = path.join(__dirname, 'message.ini');
 const pathToTempPDFFile = path.join(__dirname, 'temp.pdf');
-const pathToTemplateHtmlFile = path.join(__dirname, 'template.html');
 const { print } =  require("pdf-to-printer");
+
+const defaultValues = {
+    template_name: 'template',
+    replacement_map: '{}',
+};
+
+const booleanKeys = ['raw_html', 'show_images'];
 
 const removeQuotes = str => {
     return str.substr(1, str.length - 2);
 }
 
-const processMessage = (json) => {
-    const message = json.message.value;
-    const unquotedMessage = removeQuotes(message);
-    let messageMinusCommand = unquotedMessage;
-    if(json.command_to_remove.value){
-        messageMinusCommand = unquotedMessage.replace(`${json.command_to_remove.value.length} `, '');
+const getDataFromIniFile = () => {
+    const iniFileContents = `${fs.readFileSync(pathToIniFile)}`;
+    console.log(iniFileContents);
+    const json = ini2Json.parse(iniFileContents);
+    const cleanJson = {};
+    Object.keys(json).forEach(key => {
+        cleanJson[key] = removeQuotes(json[key].value);
+        if(booleanKeys.includes(key)){
+            cleanJson[key] = cleanJson[key] === '1';
+        }
+    });
+    Object.keys(defaultValues).forEach(key => {
+        if(cleanJson[key] !== ''){
+            return;
+        }
+        cleanJson[key] = defaultValues[key];
+    });
+
+    return cleanJson;
+};
+
+const processString = (data, string) => {
+    let messageMinusCommand = string;
+    if(data.text_to_remove){
+        messageMinusCommand = string.replace(`${data.text_to_remove.length} `, '');
     }
-    if(json.show_images === '"false"'){
+    if(!data.show_images){
         return messageMinusCommand;
     }
     const wordsInMessage = messageMinusCommand.split(' ');
@@ -34,19 +59,26 @@ const processMessage = (json) => {
     return updatedWords.join(' ');
 };
 
-const getHtmlFileContents = (json) => {
-    return `${fs.readFileSync(pathToTemplateHtmlFile)}`.replace('%SENDER_DISPLAY_NAME%', removeQuotes(json.recipient_display_name.value)).replace('%MESSAGE%', processMessage(json));
+
+const getHtmlFileContents = (data) => {
+    const pathToTemplateHtmlFile = path.join(__dirname, `${data.template_name}.html`);
+    const templateFileContents = `${fs.readFileSync(pathToTemplateHtmlFile)}`;
+    if(data.raw_html){
+        return templateFileContents.replace('%MESSAGE%', decodeURI(data.message));
+    }
+
+    const replacementMap = JSON.parse(decodeURI(data.replacement_map));
+    return Object.keys(replacementMap).reduce((sum, key) => {
+        const processedValue =  processString(data, replacementMap[key]);
+        return templateFileContents.replace(`${key}`, processedValue);
+    }, templateFileContents);
 };
 
 const printFile = () => {
-    const iniFileContents = `${fs.readFileSync(pathToIniFile)}`;
-    console.log(iniFileContents);
-    const json = ini2Json.parse(iniFileContents);
-    const htmlFileContents = getHtmlFileContents(json);
-    console.log(htmlFileContents);
-
+    const data = getDataFromIniFile();
+    const htmlFileContents = getHtmlFileContents(data);
     pdf.create(htmlFileContents, { renderDelay: 1000 }).toFile(pathToTempPDFFile, () => {
-        print(pathToTempPDFFile, {scale: 'noscale', printer: removeQuotes(json.printer_name.value)});
+        print(pathToTempPDFFile, {scale: 'noscale', printer: data.printerName === '' ? undefined : data.printerName});
     });
 };
 
