@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Trebuchet MS', sans-serif;
+        }
+        html, body { width: 270px; margin: 0; padding: 0;}
+        img { display: block; width: 100%; max-width: 100%;}
+        hr {
+            border: 5px solid black;
+            border-radius: 5px;
+        }
+        .header {
+            display: flex;
+        }
+
+        .header > img {
+            max-width: 70px;
+            width: 70px;
+        }
+
+        .header > * {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        %PROFILE_PICTURE%
+        <div class="header-text">
+            <div>From the desk of...</div>
+            <div>
+                <b>
+                    %SENDER_DISPLAY_NAME%
+                </b>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <p>
+        %MESSAGE%
+    </p>
+</body>
+</html>

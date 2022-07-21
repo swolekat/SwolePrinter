@@ -42,7 +42,7 @@ const getDataFromIniFile = () => {
 const processString = (data, string) => {
     let messageMinusCommand = string;
     if(data.text_to_remove){
-        messageMinusCommand = string.replace(`${data.text_to_remove.length} `, '');
+        messageMinusCommand = string.replace(`${data.text_to_remove} `, '');
     }
     if(!data.show_images){
         return messageMinusCommand;
@@ -70,7 +70,7 @@ const getHtmlFileContents = (data) => {
     const replacementMap = JSON.parse(decodeURI(data.replacement_map));
     return Object.keys(replacementMap).reduce((sum, key) => {
         const processedValue =  processString(data, replacementMap[key]);
-        return templateFileContents.replace(`${key}`, processedValue);
+        return sum.replace(`${key}`, processedValue);
     }, templateFileContents);
 };
 
