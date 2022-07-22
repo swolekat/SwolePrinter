@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Trebuchet MS', sans-serif;
+        }
+        html, body { width: 270px; margin: 0; padding: 0;}
+        hr {
+            border: 5px solid black;
+            border-radius: 5px;
+        }
+        h4 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h4>
+        Swolekat Lotto
+    </h4>
+    <h2>
+        %USERNAME%'s LUCKY NUMBERS
+    </h2>
+    <hr>
+    <h2 id="numbers">
+    </h2>
+    <hr>
+    <script>
+        var numbers = %NUMBERS%;
+        document.getElementById('numbers').innerHTML = numbers.join('•');
+    </script>
+</body>
+</html>

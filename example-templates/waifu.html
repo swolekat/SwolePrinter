@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Trebuchet MS', sans-serif;
+        }
+        html, body { width: 270px; margin: 0; padding: 0;}
+        img { display: block; width: 100%; max-width: 100%;}
+        hr {
+            border: 5px solid black;
+            border-radius: 5px;
+        }
+        h4, h2 {
+            text-align: center;
+        }
+        #waifu-name {
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <h2>
+        %USERNAME%'s
+    </h2>
+    <h4>
+        NEW WAIFU IS
+    </h4>
+    <h2 id="waifu-name" style="display: none;">
+
+    </h2>
+    <img id="waifu-image" src="%WAIFUIMAGE%" />
+    <script>
+        var name = '%WAIFUNAME%';
+        if(name.indexOf('-')!== -1){
+            var realName = name.split('-').join(' ');
+            var nameElement = document.getElementById('waifu-name');
+            nameElement.innerHTML = realName;
+            nameElement.style = "";
+        }
+    </script>
+</body>
+</html>

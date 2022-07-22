@@ -27,3 +27,7 @@ There are two extension commands you can use:
 Inside of your lioranboard folder, there will be a `swoleprinter` folder. Here if you write html files, you can access them in the `Template Name` field. You can pass data by using things in the `Replacement Map` field.
 
 You should customize the existing templates to work with your printer. 
+
+**PLEASE NOTE**
+
+The browser that is used does NOT support modern javascript/css. Looks to be around ES5. Flexbox and grid do not work in css.
