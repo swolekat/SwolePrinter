@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const ini2Json = require('ini-to-json');
+const ini = require('ini');
 const pdf = require('html-pdf');
 
 const pathToIniFile = path.join(__dirname, 'message.ini');
@@ -14,17 +14,13 @@ const defaultValues = {
 
 const booleanKeys = ['raw_html', 'show_images'];
 
-const removeQuotes = str => {
-    return str.substr(1, str.length - 2);
-}
-
 const getDataFromIniFile = () => {
     const iniFileContents = `${fs.readFileSync(pathToIniFile)}`;
     console.log(iniFileContents);
-    const json = ini2Json.parse(iniFileContents);
+    const json = ini.parse(iniFileContents);
     const cleanJson = {};
     Object.keys(json).forEach(key => {
-        cleanJson[key] = removeQuotes(json[key].value);
+        cleanJson[key] = json[key].value;
         if(booleanKeys.includes(key)){
             cleanJson[key] = cleanJson[key] === '1';
         }
