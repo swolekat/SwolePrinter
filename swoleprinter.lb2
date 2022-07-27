@@ -8,9 +8,9 @@ version 0.0.3 by Swolekat
 LB.extCommand("SwolePrint", color = 3355443, height = 52,
   {
     replacementMap: ["Replacement Map", 0, "", null, []],
-    printerName: ["Printer Name", 20, "", null, []],
-    textToRemove: ["Text to Remove", 20, "", null, []],
-    templateName: ["Template Name", 20, "", null, []],
+    printerName: ["Printer Name", 14, "", null, []],
+    textToRemove: ["Text to Remove", 14, "", null, []],
+    templateName: ["Template Name", 14, "", null, []],
     showImages: ["Show Images", 2, false, null, []],
   }
 );
@@ -18,7 +18,7 @@ LB.extCommand("SwolePrint", color = 3355443, height = 52,
 LB.extCommand("SwolePrintRaw", color = 3355443, height = 52,
   {
     message: ["Html", 0, "", null, []],
-    printerName: ["Printer Name", 20, "", null, []],
+    printerName: ["Printer Name", 14, "", null, []],
   }
 );
 
