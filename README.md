@@ -1,4 +1,6 @@
-**THIS IS A WORK IN PROGRESS. THINGS ARE STILL CHANGING**
+**Please check out [the video tutorial](https://www.youtube.com/watch?v=QFVlfMZZj7g) if you prefer that**
+
+# Do NOT use the lb2 file directly. The line endings are off. Instead use the lb2 file from the [ko-fi page](https://ko-fi.com/s/84f433f042)
 
 # SwolePrinter
 Lioranboard 2 extension for printing things
