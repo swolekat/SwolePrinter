@@ -65,7 +65,14 @@ const getHtmlFileContents = (data) => {
 
     const replacementMap = JSON.parse(decodeURI(data.replacement_map));
     return Object.keys(replacementMap).reduce((sum, key) => {
-        const processedValue =  processString(data, replacementMap[key]);
+        let replacementMapValue = replacementMap[key];
+        if(replacementMapValue.startsWith('file:///')){
+            const pathToImage = replacementMapValue.replace('file:///', '');
+            const imageData = fs.readFileSync(pathToImage);
+            const base64String = Buffer.from(imageData).toString('base64');
+            replacementMapValue = `data:image/png;base64,${base64String}`;
+        }
+        const processedValue =  processString(data, replacementMapValue);
         return sum.replace(`${key}`, processedValue);
     }, templateFileContents);
 };
